@@ -20,13 +20,17 @@ echo "iptables -t nat -I POSTROUTING -o eth0 -j MASQUERADE" >> package/network/c
 
 # Add luci-app-ssr-plus
 pushd package/lean
+
 git clone --depth=1 https://github.com/fw876/helloworld
-cat > helloworld/luci-app-ssr-plus/root/etc/ssrplus/black.list << EOF
-services.googleapis.cn
-googleapis.cn
-heroku.com
-githubusercontent.com 
-EOF
+# Add luci-app-oled (R2S Only)特殊信息显示-温度 cpu频率 网速等
+git clone --depth=1 https://github.com/NateLol/luci-app-oled
+
+#cat > helloworld/luci-app-ssr-plus/root/etc/ssrplus/black.list << EOF
+#services.googleapis.cn
+#googleapis.cn
+#heroku.com
+#githubusercontent.com 
+#EOF
 popd
 
 # Clone community packages to package/community
@@ -79,8 +83,7 @@ sed -i "/commit luci/i\uci set luci.main.mediaurlbase='/luci-static/argon'" pack
 # 修复核心及添加温度显示
 sed -i 's|pcdata(boardinfo.system or "?")|luci.sys.exec("uname -m") or "?"|g' feeds/luci/modules/luci-mod-admin-full/luasrc/view/admin_status/index.htm
 sed -i 's/or "1"%>/or "1"%> ( <%=luci.sys.exec("expr `cat \/sys\/class\/thermal\/thermal_zone0\/temp` \/ 1000") or "?"%> \&#8451; ) /g' feeds/luci/modules/luci-mod-admin-full/luasrc/view/admin_status/index.htm
-# Add luci-app-oled (R2S Only)特殊信息显示-温度 cpu频率 网速等
-git clone --depth=1 https://github.com/NateLol/luci-app-oled
+
 # Mod zzz-default-settings
 #pushd package/lean/default-settings/files
 #sed -i '/http/d' zzz-default-settings
