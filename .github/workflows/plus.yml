@@ -33,12 +33,12 @@ jobs:
         
     - name: Cancelling
       if: steps.checkcpu.outputs.status == 'cancel'
-      uses: inlolo/cancel-action@0.2
+      uses: andymckay/cancel-action@0.2
       
     - name: Checkout
-      uses: inlolo/checkout@main
-      
-    - name: Initialization environment
+      uses: actions/checkout@main
+
+    - name: Initialization Environment
       env:
         DEBIAN_FRONTEND: noninteractive
       run: |
@@ -48,6 +48,7 @@ jobs:
         sudo -E apt-get -qq autoremove --purge
         sudo -E apt-get -qq clean
         sudo timedatectl set-timezone "$TZ"
+        
         sudo mkdir -p /workdir
         sudo chown $USER:$GROUPS /workdir
         
@@ -59,7 +60,6 @@ jobs:
         
         echo "tag_name=$(date +%Y%m%d)" >> $GITHUB_ENV
         echo "DATE=$(date "+%Y-%m-%d %H:%M:%S")"  >> $GITHUB_ENV
-        
         
     - name: Clone source code
       working-directory: /workdir
@@ -103,13 +103,11 @@ jobs:
         if [  $count -gt 0 ] ; then
             cp -r *.xz ${UPLOAD}/
         fi
-        echo "::set-output name=status::success"
-        
-    
+        echo "::set-output name=status::success"    
         
     - name: Create Firmware Release
       if: steps.compile.outputs.status == 'success' && env.RELEASE == 'true' && !cancelled()
-      uses: inlolo/release-action@v1
+      uses: ncipollo/release-action@v1
       with:
         name: ${{ env.DATE }} 🚀 / N1-Openwrt | 编译
         allowUpdates: true
@@ -119,7 +117,7 @@ jobs:
         artifacts:  ${{ env.UPLOAD }}/*
         
     - name: Package OpenWrt with flippy script
-      uses: inlolo/package-flippy-openwrt@main
+      uses: mingxiaoyu/package-flippy-openwrt@main
       id: package
       with:
         types: l1pro,s905d,beikeyun,s905x3
@@ -129,7 +127,7 @@ jobs:
         openwrt-path: openwrt/bin/targets/*/*
 
     - name: Package OpenWrt with flippy script(+)     
-      uses: inlolo/package-flippy-openwrt@main
+      uses: mingxiaoyu/package-flippy-openwrt@main
       with:
         types: l1pro,s905d,beikeyun,s905x3
         kernel-version: latest+
@@ -139,7 +137,7 @@ jobs:
    
     - name: Create release
       if: steps.package.outputs.status == 'true' && env.RELEASE == 'true' && !cancelled()
-      uses: inlolo/release-action@v1
+      uses: ncipollo/release-action@v1
       with:
         name: ${{ env.DATE }} 🚀 / N1-Openwrt | 编译
         allowUpdates: true
@@ -164,7 +162,7 @@ jobs:
         artifacts:  ${{ env.UPLOAD }}/*
         
     - name: Remove old Releases
-      uses: inlolo/delete-older-releases@v0.1.0
+      uses: dev-drprasad/delete-older-releases@v0.1.0
       if: env.RELEASE == 'true' && !cancelled()
       with:
         keep_latest: 3
