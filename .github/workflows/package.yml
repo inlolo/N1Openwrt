@@ -22,7 +22,7 @@ jobs:
   
     steps:
     - name: Checkout
-      uses: actions/checkout@main
+      uses: inlolo/checkout@main
       #with:
       #  ref: 57
         
