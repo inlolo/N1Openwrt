@@ -52,14 +52,14 @@ jobs:
         sudo mkdir -p /workdir
         sudo chown $USER:$GROUPS /workdir
         
-        sudo mkdir -p /upload
-        sudo chown $USER:$GROUPS /upload
+        #sudo mkdir -p /upload
+        #sudo chown $USER:$GROUPS /upload
         
-        cd /upload
-        echo "UPLOAD=$PWD" >> $GITHUB_ENV
+        #cd /upload
+        #echo "UPLOAD=$PWD" >> $GITHUB_ENV
         
-        echo "tag_name=$(date +%Y%m%d)" >> $GITHUB_ENV
-        echo "DATE=$(date "+%Y-%m-%d %H:%M:%S")"  >> $GITHUB_ENV
+        #echo "tag_name=$(date +%Y%m%d)" >> $GITHUB_ENV
+        #echo "DATE=$(date "+%Y-%m-%d %H:%M:%S")"  >> $GITHUB_ENV
         
     - name: Clone source code
       working-directory: /workdir
@@ -145,7 +145,7 @@ jobs:
         commit: master
         token: ${{ secrets.RELEASES_TOKEN  }}
         body: |
-          默认IP：192.168.31.2 默认密码： password
+          默认IP：192.168.1.124 默认密码： password
           全新刷入emmc方法：
              1. 固件刷入U盘。
              2. cd root
