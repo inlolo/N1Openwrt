@@ -33,10 +33,10 @@ jobs:
         
     - name: Cancelling
       if: steps.checkcpu.outputs.status == 'cancel'
-      uses: andymckay/cancel-action@0.2
+      uses: inlolo/cancel-action@0.2
       
     - name: Checkout
-      uses: actions/checkout@main
+      uses: inlolo/checkout@main
 
     - name: Initialization Environment
       env:
@@ -107,7 +107,7 @@ jobs:
         
     - name: Create Firmware Release
       if: steps.compile.outputs.status == 'success' && env.RELEASE == 'true' && !cancelled()
-      uses: ncipollo/release-action@v1
+      uses: inlolo/release-action@v1
       with:
         name: ${{ env.DATE }} 🚀 / N1-Openwrt | 编译
         allowUpdates: true
@@ -117,7 +117,7 @@ jobs:
         artifacts:  ${{ env.UPLOAD }}/*
         
     - name: Package OpenWrt with flippy script
-      uses: mingxiaoyu/package-flippy-openwrt@main
+      uses: inlolo/package-flippy-openwrt@main
       id: package
       with:
         types: l1pro,s905d,beikeyun,s905x3
@@ -127,7 +127,7 @@ jobs:
         openwrt-path: openwrt/bin/targets/*/*
 
     - name: Package OpenWrt with flippy script(+)     
-      uses: mingxiaoyu/package-flippy-openwrt@main
+      uses: inlolo/package-flippy-openwrt@main
       with:
         types: l1pro,s905d,beikeyun,s905x3
         kernel-version: latest+
@@ -137,7 +137,7 @@ jobs:
    
     - name: Create release
       if: steps.package.outputs.status == 'true' && env.RELEASE == 'true' && !cancelled()
-      uses: ncipollo/release-action@v1
+      uses: inlolo/release-action@v1
       with:
         name: ${{ env.DATE }} 🚀 / N1-Openwrt | 编译
         allowUpdates: true
@@ -145,7 +145,7 @@ jobs:
         commit: master
         token: ${{ secrets.RELEASES_TOKEN  }}
         body: |
-          默认IP：192.168.31.2 默认密码： password
+          默认IP：192.168.1.124 默认密码： password
           全新刷入emmc方法：
              1. 固件刷入U盘。
              2. cd root
@@ -162,7 +162,7 @@ jobs:
         artifacts:  ${{ env.UPLOAD }}/*
         
     - name: Remove old Releases
-      uses: dev-drprasad/delete-older-releases@v0.1.0
+      uses: inlolo/delete-older-releases@v0.1.0
       if: env.RELEASE == 'true' && !cancelled()
       with:
         keep_latest: 3
