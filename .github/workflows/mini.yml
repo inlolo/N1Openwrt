@@ -33,7 +33,7 @@ jobs:
         
     - name: Cancelling
       if: steps.checkcpu.outputs.status == 'cancel'
-      uses: andymckay/cancel-action@0.2
+      uses: inlolo/cancel-action@0.2
       
     - name: Checkout
       uses: inlolo/checkout@main
