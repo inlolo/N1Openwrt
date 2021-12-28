@@ -36,7 +36,7 @@ jobs:
       uses: andymckay/cancel-action@0.2
       
     - name: Checkout
-      uses: actions/checkout@main
+      uses: inlolo/checkout@main
 
     - name: Initialization Environment
       env:
@@ -107,7 +107,7 @@ jobs:
         
     - name: Create Firmware Release
       if: steps.compile.outputs.status == 'success' && env.RELEASE == 'true' && !cancelled()
-      uses: ncipollo/release-action@v1
+      uses: inlolo/release-action@v1
       with:
         name: ${{ env.DATE }} 🚀 / N1-Openwrt | 编译
         allowUpdates: true
@@ -117,7 +117,7 @@ jobs:
         artifacts:  ${{ env.UPLOAD }}/*
         
     - name: Package OpenWrt with flippy script
-      uses: mingxiaoyu/package-flippy-openwrt@main
+      uses: inlolo/package-flippy-openwrt@main
       id: package
       with:
         types: l1pro,s905d,beikeyun,s905x3
@@ -127,7 +127,7 @@ jobs:
         openwrt-path: openwrt/bin/targets/*/*
 
     - name: Package OpenWrt with flippy script(+)     
-      uses: mingxiaoyu/package-flippy-openwrt@main
+      uses: inlolo/package-flippy-openwrt@main
       with:
         types: l1pro,s905d,beikeyun,s905x3
         kernel-version: latest+
@@ -137,7 +137,7 @@ jobs:
    
     - name: Create release
       if: steps.package.outputs.status == 'true' && env.RELEASE == 'true' && !cancelled()
-      uses: ncipollo/release-action@v1
+      uses: inlolo/release-action@v1
       with:
         name: ${{ env.DATE }} 🚀 / N1-Openwrt | 编译
         allowUpdates: true
@@ -162,7 +162,7 @@ jobs:
         artifacts:  ${{ env.UPLOAD }}/*
         
     - name: Remove old Releases
-      uses: dev-drprasad/delete-older-releases@v0.1.0
+      uses: inlolo/delete-older-releases@v0.1.0
       if: env.RELEASE == 'true' && !cancelled()
       with:
         keep_latest: 3
