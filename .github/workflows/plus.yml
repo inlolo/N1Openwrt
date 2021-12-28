@@ -52,14 +52,6 @@ jobs:
         sudo mkdir -p /workdir
         sudo chown $USER:$GROUPS /workdir
         
-        #sudo mkdir -p /upload
-        #sudo chown $USER:$GROUPS /upload
-        
-        #cd /upload
-        #echo "UPLOAD=$PWD" >> $GITHUB_ENV
-        
-        #echo "tag_name=$(date +%Y%m%d)" >> $GITHUB_ENV
-        #echo "DATE=$(date "+%Y-%m-%d %H:%M:%S")"  >> $GITHUB_ENV
         
     - name: Clone source code
       working-directory: /workdir
